@@ -1,9 +1,6 @@
-import { Controller, Get, Query, Param, Post, Body } from '@nestjs/common';
-
-// @Post()  // POST /user
-// @Put(':id')  // PUT /user/:id
-// @Delete(':id')  // DELETE /user/:id
-
+import { Controller, Get, Query, Param, Post, Body, Put } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto.js';
+import { UpdateUserDto } from './dto/update-user.dto.js';
 
 @Controller('user')
 export class UserController {
@@ -28,8 +25,17 @@ export class UserController {
   getUserById(@Param('id') id: string) {
     return { id, name: 'John Doe' };
   }
+
   @Post()
-  createUser(@Body() body: any) {
-    return { message: 'User created successfully' };
+  createUser(@Body() createUserDto: CreateUserDto) {
+    return { data: createUserDto, message: 'User created successfully' };
+  }
+
+  @Put(':id')
+  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return {
+      data: { id, ...updateUserDto },
+      message: 'User updated successfully',
+    };
   }
 }
